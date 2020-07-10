@@ -1,12 +1,10 @@
 package com.familytracker;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +32,9 @@ import java.util.concurrent.TimeUnit;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
+
+    private LoginTracker loginTracker;
+
     private static final int lenOTP = 6;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -49,20 +50,23 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     private String phoneNumber;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mobileNumberET = findViewById(R.id.editTextMobileNumber_AL);
-        editMobileNumberIB = findViewById(R.id.imageButtonEditMobileNumber_AL);
-        getOTPBtn = findViewById(R.id.buttonGetOTP_AL);
-        countDownTv = findViewById(R.id.textViewCountdown_AL);
-        progressBar = findViewById(R.id.progressBar_AL);  //visibility = INVISIBLE by default
-        otpET = findViewById(R.id.editTextOTP_AL);  //visibility = INVISIBLE by default
-        resendBtn = findViewById(R.id.buttonResendOTP_AL);  //visibility = INVISIBLE by default
-        submitBtn = findViewById(R.id.buttonSubmit_AL);  //visibility = INVISIBLE by default
+        loginTracker = (LoginTracker) getIntent().getSerializableExtra("LoginTracker");
+
+        mobileNumberET = findViewById(R.id.idMobileNumberET_AL);
+        editMobileNumberIB = findViewById(R.id.idEditMobileNumberIB_AL);
+        getOTPBtn = findViewById(R.id.idGetOTPBtn_AL);
+        countDownTv = findViewById(R.id.idCountdownTV_AL);
+        progressBar = findViewById(R.id.idProgressPB_AL);  //visibility = INVISIBLE by default
+        otpET = findViewById(R.id.idOTPET_AL);  //visibility = INVISIBLE by default
+        resendBtn = findViewById(R.id.idResendOTPBtn_AL);  //visibility = INVISIBLE by default
+        submitBtn = findViewById(R.id.idSubmitBtn_AL);  //visibility = INVISIBLE by default
 
         progressBar.setProgress(60);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -255,9 +259,7 @@ public class LoginActivity extends AppCompatActivity {
                             // TODO: 6/23/2020 User profile pending
                             FirebaseUser user = task.getResult().getUser(); // this user result can be used to show user profile
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            loginTracker.loginComplete(LoginActivity.this);
 
                         } else {
                             // Sign in failed, display a message and update the UI

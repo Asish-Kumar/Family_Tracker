@@ -5,13 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout1_AL"
+        android:id="@+id/idLogoConstraintLayout_AL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2_AL"
+        app:layout_constraintBottom_toTopOf="@+id/idFormConstraintLayout_AL"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
@@ -30,107 +30,105 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2_AL"
+        android:id="@+id/idFormConstraintLayout_AL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1_AL"
+        app:layout_constraintTop_toBottomOf="@+id/idLogoConstraintLayout_AL"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView_AL"
+            android:id="@+id/idMessageTV_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/editTextMobileNumber_AL"
+            app:layout_constraintBottom_toTopOf="@id/idMobileNumberET_AL"
             android:text="Please enter your mobile number"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:textColor="@color/colorPrimary" />
 
         <EditText
-            android:id="@+id/countryCode_AL"
+            android:id="@+id/idCountryCodeET_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-
-
-            app:layout_constraintTop_toBottomOf="@id/textView_AL"
+            app:layout_constraintTop_toBottomOf="@id/idMessageTV_AL"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/editTextMobileNumber_AL"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetOTP_AL"
+            app:layout_constraintRight_toLeftOf="@id/idMobileNumberET_AL"
+            app:layout_constraintBottom_toTopOf="@+id/idGetOTPBtn_AL"
             android:digits="0123456789"
             android:text="+91"
             android:inputType="none"/>
 
         <EditText
-            android:id="@+id/editTextMobileNumber_AL"
+            android:id="@+id/idMobileNumberET_AL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView_AL"
+            android:layout_below="@id/idMessageTV_AL"
 
-            app:layout_constraintTop_toBottomOf="@id/textView_AL"
-            app:layout_constraintLeft_toRightOf="@+id/countryCode_AL"
-            app:layout_constraintRight_toLeftOf="@id/imageButtonEditMobileNumber_AL"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetOTP_AL"
+            app:layout_constraintTop_toBottomOf="@id/idMessageTV_AL"
+            app:layout_constraintLeft_toRightOf="@+id/idCountryCodeET_AL"
+            app:layout_constraintRight_toLeftOf="@id/idEditMobileNumberIB_AL"
+            app:layout_constraintBottom_toTopOf="@+id/idGetOTPBtn_AL"
             android:digits="0123456789"
             android:hint="01234567890"
             android:inputType="phone"
             android:maxLength="10" />
 
         <ImageButton
-            android:id="@+id/imageButtonEditMobileNumber_AL"
+            android:id="@+id/idEditMobileNumberIB_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit"
             android:background="@android:color/transparent"
 
-            app:layout_constraintTop_toBottomOf="@id/textView_AL"
-            app:layout_constraintLeft_toRightOf="@id/editTextMobileNumber_AL"
+            app:layout_constraintTop_toBottomOf="@id/idMessageTV_AL"
+            app:layout_constraintLeft_toRightOf="@id/idMobileNumberET_AL"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetOTP_AL" />
+            app:layout_constraintBottom_toTopOf="@+id/idGetOTPBtn_AL" />
 
         <TextView
-            android:id="@+id/textViewCountdown_AL"
+            android:id="@+id/idCountdownTV_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintTop_toBottomOf="@id/editTextMobileNumber_AL"
+            app:layout_constraintTop_toBottomOf="@id/idMobileNumberET_AL"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/editTextOTP_AL"
+            app:layout_constraintBottom_toTopOf="@id/idOTPET_AL"
             android:visibility="invisible"/>
 
         <ProgressBar
-            android:id="@+id/progressBar_AL"
+            android:id="@+id/idProgressPB_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="false"
 
-            app:layout_constraintTop_toBottomOf="@id/editTextMobileNumber_AL"
+            app:layout_constraintTop_toBottomOf="@id/idMobileNumberET_AL"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/editTextOTP_AL"
+            app:layout_constraintBottom_toTopOf="@id/idOTPET_AL"
             android:visibility="invisible"/>
 
         <EditText
-            android:id="@+id/editTextOTP_AL"
+            android:id="@+id/idOTPET_AL"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="otp here"
             android:inputType="number"
 
-            app:layout_constraintTop_toBottomOf="@id/progressBar_AL"
+            app:layout_constraintTop_toBottomOf="@id/idProgressPB_AL"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/buttonResendOTP_AL"
+            app:layout_constraintBottom_toTopOf="@id/idResendOTPBtn_AL"
             android:visibility="invisible"/>
 
         <Button
-            android:id="@+id/buttonResendOTP_AL"
+            android:id="@+id/idResendOTPBtn_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/oval_button_shape"
@@ -139,14 +137,14 @@
             android:textAllCaps="false"
             android:enabled="false"
 
-            app:layout_constraintTop_toBottomOf="@id/editTextOTP_AL"
-            app:layout_constraintRight_toLeftOf="@id/buttonSubmit_AL"
+            app:layout_constraintTop_toBottomOf="@id/idOTPET_AL"
+            app:layout_constraintRight_toLeftOf="@id/idSubmitBtn_AL"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="invisible"/>
 
         <Button
-            android:id="@+id/buttonSubmit_AL"
+            android:id="@+id/idSubmitBtn_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/oval_button_shape"
@@ -154,17 +152,17 @@
             android:text="Submit"
             android:textAllCaps="false"
 
-            app:layout_constraintTop_toBottomOf="@id/editTextOTP_AL"
+            app:layout_constraintTop_toBottomOf="@id/idOTPET_AL"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/buttonResendOTP_AL"
+            app:layout_constraintLeft_toRightOf="@id/idResendOTPBtn_AL"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="invisible"/>
 
         <Button
-            android:id="@+id/buttonGetOTP_AL"
+            android:id="@+id/idGetOTPBtn_AL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/editTextMobileNumber_AL"
+            app:layout_constraintTop_toBottomOf="@id/idMobileNumberET_AL"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

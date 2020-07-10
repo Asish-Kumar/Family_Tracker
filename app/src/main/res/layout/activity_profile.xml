@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/idProfilePictureIV_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/idDisplayNameTV_AP"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/idDisplayNameTV_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Display name"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/idDisplayNameET_AP"
+        app:layout_constraintTop_toBottomOf="@id/idProfilePictureIV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idUserNameTV_AP" />
+
+    <EditText
+        android:id="@+id/idDisplayNameET_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Display Name"
+
+        app:layout_constraintLeft_toRightOf="@id/idDisplayNameTV_AP"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idProfilePictureIV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idUserNameTV_AP"/>
+
+    <TextView
+        android:id="@+id/idUserNameTV_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User name"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/idUserNameET_AP"
+        app:layout_constraintTop_toBottomOf="@id/idDisplayNameTV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idMobileNumberTV_AP"/>
+
+    <EditText
+        android:id="@+id/idUserNameET_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="User Name"
+
+        app:layout_constraintLeft_toRightOf="@id/idUserNameTV_AP"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idDisplayNameTV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idMobileNumberTV_AP"/>
+
+    <TextView
+        android:id="@+id/idMobileNumberTV_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mob. Number"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/idMobileNumberET_AP"
+        app:layout_constraintTop_toBottomOf="@id/idUserNameTV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idSaveBtn_AP"/>
+
+    <EditText
+        android:id="@+id/idMobileNumberET_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:text="Mobile Number"
+
+        app:layout_constraintLeft_toRightOf="@id/idMobileNumberTV_AP"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idUserNameTV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idSaveBtn_AP"/>
+
+    <Button
+        android:id="@+id/idEditBtn_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_button_shape"
+
+        android:textColor="#cdd8f1"
+        android:text="Edit"
+        android:textAllCaps="false"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/idSaveBtn_AP"
+        app:layout_constraintTop_toBottomOf="@id/idMobileNumberTV_AP"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/idSaveBtn_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_button_shape"
+
+        android:textColor="#cdd8f1"
+        android:text="Save"
+        android:textAllCaps="false"
+
+        app:layout_constraintLeft_toRightOf="@id/idEditBtn_AP"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idMobileNumberTV_AP"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

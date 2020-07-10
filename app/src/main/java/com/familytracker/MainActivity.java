@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean backPressed = false;
     private FirebaseAuth firebaseAuth;
 
+    private LoginTracker loginTracker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,18 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate: User not logged in");
             // TODO: 7/9/2020 go to login activity
             Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("LoginTracker", loginTracker);
             startActivity(intent);
         }
+
+        loginTracker = new LoginTracker() {
+            @Override
+            public void loginComplete(LoginActivity loginActivity) {
+                Intent intent = new Intent(loginActivity, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
 
         Log.d(TAG, "onCreate: hello");
     }
