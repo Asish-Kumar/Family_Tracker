@@ -3,6 +3,7 @@ package com.familytracker;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,17 +21,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.OutputStream;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
-    private static final int REQUEST_CODE_CHOOSE_PIC = 0;
-    private static final int REQUEST_CODE_TAKE_PIC = 1;
+    public static final int TAKE_PIC_REQUEST_CODE = 0;
+    public static final int CHOOSE_PIC_REQUEST_CODE = 1;
+    private String profilePhotoFileName = "Profile_Photo.jpg";
+    private File fileStorageDir;
 
     private Uri imagePathUri;
+    private String currentPhotoPath;
 
     private ImageView profilePictureIV;
     private ImageButton editProfilePictureIB;
@@ -41,9 +48,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Button saveBtn;
 
 
-
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -53,7 +59,8 @@ public class ProfileActivity extends AppCompatActivity {
         editProfilePictureIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveBtn.setEnabled(false);
+                Toast.makeText(getApplicationContext(), "Change Pic Pressed", Toast.LENGTH_SHORT).show();
+
                 //show dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
                 builder.setTitle("Upload or Take a photo");
@@ -63,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
                         //upload image
                         Intent choosePictureIntent = new Intent(Intent.ACTION_GET_CONTENT);
                         choosePictureIntent.setType("image/*");
-                        startActivityForResult(choosePictureIntent, REQUEST_CODE_CHOOSE_PIC);
+                        startActivityForResult(choosePictureIntent, CHOOSE_PIC_REQUEST_CODE);
 
                         saveBtn.setEnabled(true);
 
@@ -73,72 +80,114 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //take photo
-                        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        try {
-                            imagePathUri = getImageFileUri();
-                        }catch (IOException e){
-                            Log.e(TAG, "onClick: Exception: ", e);
-                        }
-                        if (imagePathUri == null) {
-                            //display error
-                            Toast.makeText(ProfileActivity.this, "Sorry there was an error!" +
-                                    " Try again.", Toast.LENGTH_LONG).show();
-
-                            saveBtn.setEnabled(false);
-
-                        } else {
-                            takePicture.putExtra(MediaStore.EXTRA_OUTPUT, imagePathUri);
-                            startActivityForResult(takePicture, REQUEST_CODE_TAKE_PIC);
-
-                            saveBtn.setEnabled(true);
-
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        // Ensure that there's a camera activity to handle the intent
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            // Create the File where the photo should go
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                // Error occurred while creating the File
+                            }
+                            // Continue only if the File was successfully created
+                            if (photoFile != null) {
+                                Log.d(TAG, "onClick: photoFile: \n"+photoFile);;
+                                Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                                        "com.example.android.fileprovider",
+                                        photoFile);
+                                Log.d(TAG, "onClick: photoUri: \n"+photoURI);
+                                imagePathUri = photoURI;
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                                startActivityForResult(takePictureIntent, TAKE_PIC_REQUEST_CODE);
+                            }
                         }
                     }
+
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-        });
+        });//End change profile image onClick Listener
 
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_TAKE_PIC && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            profilePictureIV.setImageBitmap(imageBitmap);
-        }
-    }
-
-    private void init(){
+    private void init() {
         profilePictureIV = findViewById(R.id.idProfilePictureIV_AP);
         editProfilePictureIB = findViewById(R.id.idEditProfilePictureIB_AP);
         displayNmaeET = findViewById(R.id.idDisplayNameET_AP);
         userNameET = findViewById(R.id.idUserNameET_AP);
-        mobNumberET =  findViewById(R.id.idMobileNumberET_AP);
+        mobNumberET = findViewById(R.id.idMobileNumberET_AP);
         editBtn = findViewById(R.id.idEditBtn_AP);
-        saveBtn =  findViewById(R.id.idSaveBtn_AP);
+        saveBtn = findViewById(R.id.idSaveBtn_AP);
+
+        fileStorageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File profilePhotoFile = new File(fileStorageDir +"/"+ profilePhotoFileName);
+        if(profilePhotoFile.exists()) {
+            Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                    "com.example.android.fileprovider",
+                    profilePhotoFile);
+
+            profilePictureIV.setImageURI(photoURI);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name;
+        String imageFileName = "Profile_Photo.jpg";
+        File image = new File(fileStorageDir +"/"+imageFileName);
+        image.createNewFile();
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 
-    private Uri getImageFileUri() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CHOOSE_PIC_REQUEST_CODE) {
+                if (data == null) {
+                    Toast.makeText(getApplicationContext(), "Image cannot be null!", Toast.LENGTH_LONG).show();
+                } else {
+                    imagePathUri = data.getData();
+                    //set previews
+                    Log.d(TAG, "onActivityResult: path: "+imagePathUri.getPath());
 
-        Uri photoURI = FileProvider.getUriForFile(this,
-                "com.example.android.fileprovider",
-                image);
+                    profilePictureIV.setImageURI(imagePathUri);
 
-        return photoURI;
+                    File toFile = new File(fileStorageDir +"/"+ profilePhotoFileName);
+                    Bitmap fromFileBitmap = ((BitmapDrawable)profilePictureIV.getDrawable()).getBitmap();
+
+                    try {
+                        if(!toFile.exists()){
+                            toFile.createNewFile();
+                        }
+                        OutputStream out = new FileOutputStream(toFile);
+                        fromFileBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                        out.flush();
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else {
+                Log.d(TAG, "onActivityResult: else is running : imagePathUri: \n"+imagePathUri);
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(imagePathUri);
+                sendBroadcast(mediaScanIntent);
+                profilePictureIV.setImageURI(imagePathUri);
+
+            }
+
+        } else if (resultCode != RESULT_CANCELED) {
+            Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_LONG).show();
+        }
     }
+
 }
