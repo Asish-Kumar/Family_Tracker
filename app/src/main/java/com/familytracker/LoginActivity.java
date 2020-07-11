@@ -1,5 +1,6 @@
 package com.familytracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -34,8 +35,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
 
     private static final String TAG = "LoginActivity";
 
-    private LoginTracker loginTracker;
-
     private static final int lenOTP = 6;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -57,8 +56,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        loginTracker = (LoginTracker) getIntent().getSerializableExtra("LoginTracker");
 
         mobileNumberET = findViewById(R.id.idMobileNumberET_AL);
         editMobileNumberIB = findViewById(R.id.idEditMobileNumberIB_AL);
@@ -260,7 +257,9 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                             // TODO: 6/23/2020 User profile pending
                             FirebaseUser user = task.getResult().getUser(); // this user result can be used to show user profile
 
-                            loginTracker.loginComplete(LoginActivity.this);
+                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                            finish();
 
                         } else {
                             // Sign in failed, display a message and update the UI

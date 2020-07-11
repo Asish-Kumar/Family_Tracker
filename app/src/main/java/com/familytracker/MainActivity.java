@@ -1,6 +1,8 @@
 package com.familytracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,27 +18,14 @@ import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
 
-
     private static final String TAG = "MainActivity";
     private boolean backPressed = false;
     private FirebaseAuth firebaseAuth;
-
-    private LoginTracker loginTracker;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        loginTracker = new LoginTracker() {
-            @Override
-            public void loginComplete(LoginActivity loginActivity) {
-                Intent intent = new Intent(loginActivity, ProfileActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -45,11 +34,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             Log.d(TAG, "onCreate: User not logged in");
             // TODO: 7/9/2020 go to login activity
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("LoginTracker", loginTracker);
-            startActivity(intent);
+            this.startActivity(intent);
+            finish();
         } else{
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
+            finish();
         }
 
         Log.d(TAG, "onCreate: hello");
@@ -74,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
         }, 2000);
     }
+
 
 
 }
