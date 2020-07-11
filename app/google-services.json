@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "529085583736",
+    "firebase_url": "https://family-tracker-4399a.firebaseio.com",
+    "project_id": "family-tracker-4399a",
+    "storage_bucket": "family-tracker-4399a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529085583736:android:e41999b05bd522b648388d",
+        "android_client_info": {
+          "package_name": "com.familytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529085583736-qpa4mip7umbr4ln5cmc3g3l408eklli2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-u8tgAShe1baE26kRCDYm49cjrkKss38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529085583736-qpa4mip7umbr4ln5cmc3g3l408eklli2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,6 @@
 package com.familytracker;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +11,10 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements Serializable {
 
 
     private static final String TAG = "MainActivity";
@@ -28,24 +29,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loginTracker = new LoginTracker() {
+            @Override
+            public void loginComplete(LoginActivity loginActivity) {
+                Intent intent = new Intent(loginActivity, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
         if(currentUser == null){
             Log.d(TAG, "onCreate: User not logged in");
             // TODO: 7/9/2020 go to login activity
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra("LoginTracker", loginTracker);
             startActivity(intent);
+        } else{
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
         }
-
-        loginTracker = new LoginTracker() {
-            @Override
-            public void loginComplete(LoginActivity loginActivity) {
-                Intent intent = new Intent(loginActivity, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
 
         Log.d(TAG, "onCreate: hello");
     }

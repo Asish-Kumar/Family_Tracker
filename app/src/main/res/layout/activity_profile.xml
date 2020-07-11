@@ -18,6 +18,16 @@
         app:layout_constraintBottom_toTopOf="@id/idDisplayNameTV_AP"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageButton
+        android:id="@+id/idEditProfilePictureIB_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit"
+        android:background="@android:color/transparent"
+
+        app:layout_constraintBottom_toBottomOf="@id/idProfilePictureIV_AP"
+        app:layout_constraintRight_toRightOf="@id/idProfilePictureIV_AP"/>
+
     <TextView
         android:id="@+id/idDisplayNameTV_AP"
         android:layout_width="wrap_content"
