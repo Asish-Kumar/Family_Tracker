@@ -21,9 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -130,6 +128,8 @@ public class ProfileActivity extends AppCompatActivity {
                     "com.example.android.fileprovider",
                     profilePhotoFile);
 
+            Log.d(TAG, "init: photoUri: \n"+photoURI);
+
             profilePictureIV.setImageURI(photoURI);
         }
     }
@@ -177,10 +177,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                 }
             } else {
-                Log.d(TAG, "onActivityResult: else is running : imagePathUri: \n"+imagePathUri);
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScanIntent.setData(imagePathUri);
                 sendBroadcast(mediaScanIntent);
+                Log.d(TAG, "onActivityResult: else is running: \nimagePathUri : "+imagePathUri);
+                // TODO: 7/11/2020 Why is the below line not setting the image I just took throught Take Picture option.
                 profilePictureIV.setImageURI(imagePathUri);
 
             }
