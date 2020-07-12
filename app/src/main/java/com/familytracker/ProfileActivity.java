@@ -45,8 +45,6 @@ public class ProfileActivity extends AppCompatActivity {
     private Button editBtn;
     private Button saveBtn;
 
-    private ImageView testIV;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity {
         editBtn = findViewById(R.id.idEditBtn_AP);
         saveBtn = findViewById(R.id.idSaveBtn_AP);
 
-        testIV = findViewById(R.id.idTestIV_AP);
 
         fileStorageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
@@ -136,8 +133,6 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d(TAG, "init: photoUri: \n"+photoURI);
 
             profilePictureIV.setImageURI(photoURI);
-            testIV.setImageURI(photoURI);
-
         }
     }
 
@@ -190,8 +185,9 @@ public class ProfileActivity extends AppCompatActivity {
                 sendBroadcast(mediaScanIntent);
                 Log.d(TAG, "onActivityResult: TAKE_PHOTO: \nimagePathUri : "+imagePathUri);
                 // TODO: 7/11/2020 Why is the below line not setting the image I just took throught Take Picture option.
+                profilePictureIV.setImageURI(null);
                 profilePictureIV.setImageURI(imagePathUri);
-                testIV.setImageURI(imagePathUri);
+
             }
 
         } else if (resultCode != RESULT_CANCELED) {
