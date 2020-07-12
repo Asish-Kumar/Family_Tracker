@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                
+
                 defaultMode();
             }
         });
@@ -213,7 +213,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private Bitmap getBitmap(Uri imageUri) throws IOException{
-        // TODO: 7/12/2020 Reduce all profile pics to this size before storing to storage
         int width, height;
         float scalingFactor;
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
