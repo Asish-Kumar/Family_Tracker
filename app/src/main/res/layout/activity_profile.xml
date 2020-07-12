@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="12dp">
 
 
     <ImageView
@@ -38,11 +39,14 @@
         app:layout_constraintTop_toTopOf="@id/idProfilePictureIV_AP"
         app:layout_constraintRight_toRightOf="@id/idProfilePictureIV_AP"/>
 
+
     <TextView
         android:id="@+id/idDisplayNameTV_AP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Display name"
+        android:textAlignment="center"
+        app:layout_constraintHorizontal_weight="3"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/idDisplayNameET_AP"
@@ -51,22 +55,37 @@
 
     <EditText
         android:id="@+id/idDisplayNameET_AP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Display Name"
+        android:text=""
+        app:layout_constraintHorizontal_weight="7"
 
         app:layout_constraintLeft_toRightOf="@id/idDisplayNameTV_AP"
+        app:layout_constraintRight_toLeftOf="@id/idDisplayNameValidityIB_AP"
+        app:layout_constraintTop_toBottomOf="@id/idProfilePictureIV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idUserNameTV_AP"/>
+
+    <ImageButton
+        android:id="@+id/idDisplayNameValidityIB_AP"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+
+        app:layout_constraintLeft_toRightOf="@id/idDisplayNameET_AP"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/idProfilePictureIV_AP"
         app:layout_constraintBottom_toTopOf="@id/idUserNameTV_AP"/>
 
+
     <TextView
         android:id="@+id/idUserNameTV_AP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="User name"
+        android:textAlignment="center"
+        app:layout_constraintHorizontal_weight="3"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/idUserNameET_AP"
@@ -75,38 +94,69 @@
 
     <EditText
         android:id="@+id/idUserNameET_AP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="User Name"
+        android:text=""
+        app:layout_constraintHorizontal_weight="7"
 
         app:layout_constraintLeft_toRightOf="@id/idUserNameTV_AP"
+        app:layout_constraintRight_toRightOf="@id/idUserNameValidityIB_AP"
+        app:layout_constraintTop_toBottomOf="@id/idDisplayNameTV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idMobileNumberTV_AP"/>
+
+    <ImageButton
+        android:id="@+id/idUserNameValidityIB_AP"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+
+        app:layout_constraintLeft_toRightOf="@id/idUserNameET_AP"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/idDisplayNameTV_AP"
         app:layout_constraintBottom_toTopOf="@id/idMobileNumberTV_AP"/>
 
     <TextView
         android:id="@+id/idMobileNumberTV_AP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Mob. Number"
+        android:textAlignment="center"
+        app:layout_constraintHorizontal_weight="2.9"
 
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/idCountryCodeET_AP"
+        app:layout_constraintTop_toBottomOf="@id/idUserNameTV_AP"
+        app:layout_constraintBottom_toTopOf="@id/idSaveBtn_AP"/>
+
+    <EditText
+        android:id="@+id/idCountryCodeET_AP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="+91"
+        android:inputType="none"
+        android:enabled="false"
+        app:layout_constraintHorizontal_weight="1"
+
+        app:layout_constraintLeft_toRightOf="@id/idMobileNumberTV_AP"
         app:layout_constraintRight_toLeftOf="@id/idMobileNumberET_AP"
         app:layout_constraintTop_toBottomOf="@id/idUserNameTV_AP"
         app:layout_constraintBottom_toTopOf="@id/idSaveBtn_AP"/>
 
     <EditText
         android:id="@+id/idMobileNumberET_AP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="number"
-        android:text="Mobile Number"
+        android:inputType="none"
+        android:enabled="false"
+        android:text="0123456789"
+        app:layout_constraintHorizontal_weight="5.7"
 
-        app:layout_constraintLeft_toRightOf="@id/idMobileNumberTV_AP"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/idCountryCodeET_AP"
+        app:layout_constraintRight_toLeftOf="@id/idUserNameValidityIB_AP"
         app:layout_constraintTop_toBottomOf="@id/idUserNameTV_AP"
         app:layout_constraintBottom_toTopOf="@id/idSaveBtn_AP"/>
 

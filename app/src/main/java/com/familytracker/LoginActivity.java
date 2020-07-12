@@ -233,6 +233,9 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
             mobileNumberET.requestFocus();
             return;
         }
+        if( ! phoneNumber.matches("[0-9]+")){
+            return;
+        }
 
         phoneNumber = "+91"+phoneNumber;
 
