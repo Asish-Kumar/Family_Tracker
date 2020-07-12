@@ -6,6 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/idTestIV_AP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="@id/idProfilePictureIV_AP"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/idDisplayNameTV_AP"
+        android:src="@drawable/ic_profile_150"/>
+
 
     <ImageView
         android:id="@+id/idProfilePictureIV_AP"

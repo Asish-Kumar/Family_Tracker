@@ -45,6 +45,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Button editBtn;
     private Button saveBtn;
 
+    private ImageView testIV;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
                             try {
                                 photoFile = createImageFile();
                             } catch (IOException ex) {
+                                ex.printStackTrace();
                                 // Error occurred while creating the File
                             }
                             // Continue only if the File was successfully created
@@ -120,6 +123,8 @@ public class ProfileActivity extends AppCompatActivity {
         editBtn = findViewById(R.id.idEditBtn_AP);
         saveBtn = findViewById(R.id.idSaveBtn_AP);
 
+        testIV = findViewById(R.id.idTestIV_AP);
+
         fileStorageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         File profilePhotoFile = new File(fileStorageDir +"/"+ profilePhotoFileName);
@@ -131,6 +136,8 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d(TAG, "init: photoUri: \n"+photoURI);
 
             profilePictureIV.setImageURI(photoURI);
+            testIV.setImageURI(photoURI);
+
         }
     }
 
@@ -138,8 +145,9 @@ public class ProfileActivity extends AppCompatActivity {
         // Create an image file name;
         String imageFileName = "Profile_Photo.jpg";
         File image = new File(fileStorageDir +"/"+imageFileName);
-        image.createNewFile();
-
+        if(!image.exists()) {
+            image.createNewFile();
+        }
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -156,7 +164,7 @@ public class ProfileActivity extends AppCompatActivity {
                 } else {
                     imagePathUri = data.getData();
                     //set previews
-                    Log.d(TAG, "onActivityResult: path: "+imagePathUri.getPath());
+                    Log.d(TAG, "onActivityResult: CHOOSE_PIC \nimagePathUri: "+imagePathUri);
 
                     profilePictureIV.setImageURI(imagePathUri);
 
@@ -180,10 +188,10 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScanIntent.setData(imagePathUri);
                 sendBroadcast(mediaScanIntent);
-                Log.d(TAG, "onActivityResult: else is running: \nimagePathUri : "+imagePathUri);
+                Log.d(TAG, "onActivityResult: TAKE_PHOTO: \nimagePathUri : "+imagePathUri);
                 // TODO: 7/11/2020 Why is the below line not setting the image I just took throught Take Picture option.
                 profilePictureIV.setImageURI(imagePathUri);
-
+                testIV.setImageURI(imagePathUri);
             }
 
         } else if (resultCode != RESULT_CANCELED) {
