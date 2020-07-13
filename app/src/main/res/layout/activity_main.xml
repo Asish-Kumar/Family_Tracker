@@ -7,5 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/idSplashIV_AM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_splash_red_200"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/idSplashTextTV_AM"/>
+
+    <TextView
+        android:id="@+id/idSplashTextTV_AM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="familytracker"
+        android:textColor="#008B06"
+        android:textSize="20sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idSplashIV_AM"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
