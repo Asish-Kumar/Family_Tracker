@@ -344,6 +344,9 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
+                            Intent intent = new Intent(ProfileActivity.this, DashboardActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
