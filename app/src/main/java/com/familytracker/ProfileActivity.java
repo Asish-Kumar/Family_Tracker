@@ -554,8 +554,14 @@ public class ProfileActivity extends AppCompatActivity {
     private void saveProfilePictureToFile() throws IOException {
         // set storage path
         File toFile = new File(fileStorageDir + "/" + profilePhotoFileName);
-        // read image from profilePictureIV ImageView
-        Bitmap fromFileBitmap = ((BitmapDrawable) profilePictureIV.getDrawable()).getBitmap();
+        Bitmap fromFileBitmap;
+        try {
+            // read image from profilePictureIV ImageView
+             fromFileBitmap = ((BitmapDrawable) profilePictureIV.getDrawable()).getBitmap();
+        } catch (ClassCastException e){
+            Log.d(TAG, "saveProfilePictureToFile: ClassCastException occurred but has been handled. Error: " + e);
+            return;
+        }
         // create the storage file
         if (!toFile.exists()) {
             toFile.createNewFile();
