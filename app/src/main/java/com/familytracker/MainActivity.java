@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (documentSnapshot.exists()) {
                                     Log.d(TAG, "onComplete: updateUserNamesCollection: Document exist.");
 
-                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                                     startActivity(intent);
                                     finish();
 

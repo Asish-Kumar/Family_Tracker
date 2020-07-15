@@ -44,9 +44,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -63,10 +61,9 @@ public class ProfileActivity extends AppCompatActivity {
     private File fileStorageDir;
     private Uri imagePathUri;
     private String prevUserName;
+    private String prevDisplayName;
     private String userId;
-    private List<String> allUserNames;
     private boolean isDisplayNameVaild = false;
-    private boolean isUserNameValid = false;
 
     private ProgressDialog progressDialog;
 
@@ -133,37 +130,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-        userNameET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_correct_circle));
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = userNameET.getText().toString();
-                if (checkNameValidity(userNameET, text)) {
-                    if (allUserNames.contains(text) && !text.equals(prevUserName)) {
-                        userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_wrong_circle));
-                        isUserNameValid = false;
-                    } else {
-                        userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_correct_circle));
-                        isUserNameValid = true;
-                    }
-                } else {
-                    userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_wrong_circle));
-                    isUserNameValid = false;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +140,9 @@ public class ProfileActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // save button is disabled here to prevent too many clicks from user
+                // save button is enabled in case of data sending failure in saveProfile()
+                saveBtn.setEnabled(false);
                 try {
                     // Save Profile Picture to a file in local storage
                     saveProfilePictureToFile();
@@ -181,7 +150,7 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                defaultMode();
+                // Upload profile data to server
                 saveProfile();
             }
         });
@@ -200,6 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
         mobNumberET = findViewById(R.id.idMobileNumberET_AP);
         editBtn = findViewById(R.id.idEditBtn_AP);
         saveBtn = findViewById(R.id.idSaveBtn_AP);
+        saveBtn.setEnabled(true);
 
         firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getUid();
@@ -207,10 +177,8 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         fileStorageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        allUserNames = new ArrayList<>();
-        downloadAllUserNames();
         progressDialog = new ProgressDialog(ProfileActivity.this);
-        progressDialog.setMessage("Getting data from server...");
+        progressDialog.setMessage("Fetching profile data from server...");
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -219,42 +187,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
         progressDialog.show();
 
-        displayUserProfile();
+        displayUserProfile(); // progressDialog is dismissed in this.
         defaultMode();
 
     }
 
-
-    private void downloadAllUserNames() {
-
-        db.collection(USER_NAMES_COLLECTION)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: downloadAlluserNames task is successful.");
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                allUserNames.add(document.getId());
-
-                            }
-                            progressDialog.dismiss();
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                            Toast.makeText(getApplicationContext(), "Error getting data.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Failed to get data from server.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
     private void displayUserProfile() {
 
@@ -286,14 +223,26 @@ public class ProfileActivity extends AppCompatActivity {
                             if (task.getResult().exists()) {
                                 displayNameET.setText(task.getResult().get("displayname").toString());
                                 userNameET.setText(task.getResult().get("username").toString());
+
+                                prevDisplayName = displayNameET.getText().toString();
                                 prevUserName = userNameET.getText().toString();
+                                progressDialog.dismiss();
+                            } else {
+                                //no previous data exists for this user, New user
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Welcome new user.", Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "fetching profile data failed! Chech internet connection.", Toast.LENGTH_SHORT);
+                            progressDialog.dismiss();
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "fetching profile data failed! Chech internet connection.", Toast.LENGTH_SHORT);
+                        progressDialog.dismiss();
                         e.printStackTrace();
                     }
                 });
@@ -308,6 +257,7 @@ public class ProfileActivity extends AppCompatActivity {
         rotateProfilePictureIB.setVisibility(View.VISIBLE);
         displayNameET.setEnabled(true);
         userNameET.setEnabled(true);
+        saveBtn.setEnabled(true);
     }
 
     private void defaultMode() {
@@ -315,49 +265,139 @@ public class ProfileActivity extends AppCompatActivity {
         rotateProfilePictureIB.setVisibility(View.INVISIBLE);
         displayNameET.setEnabled(false);
         userNameET.setEnabled(false);
+        // do not disable saveBtn here,
+        // cause if saveBtn is disabled here then user has no other option of getting out of ProfileActivity without closing the app
     }
 
     private void saveProfile() {
-        final Bitmap profilePicBitmap = ((BitmapDrawable) profilePictureIV.getDrawable()).getBitmap();
+
+        Bitmap bitmap;
+        try {
+            // if user has not set any profile image and the app is diplaying the default Vector graphics then this exception will occur.
+            bitmap = ((BitmapDrawable) profilePictureIV.getDrawable()).getBitmap();
+        } catch (ClassCastException e){
+            bitmap = null;
+            e.printStackTrace();
+        }
+        final Bitmap profilePicBitmap = bitmap;
         final String displayName = displayNameET.getText().toString();
         final String userName = userNameET.getText().toString();
         final String phoneNumber = "+91" + mobNumberET.getText().toString();
 
-        if ((isUserNameValid || userName.equals(prevUserName)) && isDisplayNameVaild) {
-
+        if (checkNameValidity(userNameET, userName) && isDisplayNameVaild) {
             if (!userName.equals(prevUserName)) {
-                Log.d(TAG, "saveProfile: prevUserName : "+prevUserName);
+
+                Log.d(TAG, "saveProfile: prevUserName : " + prevUserName);
                 // update USER_NAMES_COLLECTION with new userName and delete any previous data for this same user
-                updateUserNamesCollection(userName);
+                if(checkNameValidity(null, prevUserName)) {
+                    updateUserNamesCollection(userName);
+                }
+                // check username availability
+                progressDialog = new ProgressDialog(ProfileActivity.this);
+                progressDialog.setMessage("Checking username availability ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+                db.collection(USER_NAMES_COLLECTION)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "onComplete: downloadAlluserNames task is successful.");
+                                    boolean isUserNameAvailable = true;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        if (userName.equals(document.getId())) {
+                                            isUserNameAvailable = false;
+                                            saveBtn.setEnabled(true);
+                                            break;
+                                        }
+                                    }
+                                    progressDialog.dismiss();
+
+                                    if (isUserNameAvailable) {
+                                        userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_correct_circle));
+                                        if(profilePicBitmap != null) {
+                                            uploadProfilePhoto(profilePicBitmap);
+                                        }
+                                        Map<String, Object> userProfileData = new HashMap<>();
+                                        userProfileData.put("displayname", displayName);
+                                        userProfileData.put("username", userName);
+                                        userProfileData.put("phonenumber", phoneNumber);
+
+                                        uploadUserProfileData(userProfileData);
+
+                                    } else {
+                                        userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_wrong_circle));
+                                        userNameET.setError("UserName not available!");
+                                    }
+
+                                } else {
+                                    Log.w(TAG, "Error getting documents.", task.getException());
+                                    Toast.makeText(getApplicationContext(), "Error getting data. Check internet connection.", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    saveBtn.setEnabled(true);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Failed to get data from server.", Toast.LENGTH_SHORT).show();
+                                saveBtn.setEnabled(true);
+                            }
+                        });
+            } else if (!displayName.equals(prevDisplayName)) {
+                // no need to check username availability, simply update the data online.
+                userNameValidityIB.setImageDrawable(getDrawable(R.drawable.ic_correct_circle));
+                if(profilePicBitmap != null) {
+                    uploadProfilePhoto(profilePicBitmap);
+                }
+                Map<String, Object> userProfileData = new HashMap<>();
+                userProfileData.put("displayname", displayName);
+                userProfileData.put("username", userName);
+                userProfileData.put("phonenumber", phoneNumber);
+
+                // saveBtn is enabled inside this function also
+                uploadUserProfileData(userProfileData);
+
+            } else {
+                Intent intent = new Intent(ProfileActivity.this, DashboardActivity.class);
+                startActivity(intent);
+                finish();
             }
-
-            uploadProfilePhoto(profilePicBitmap);
-
-            Map<String, Object> userProfileData = new HashMap<>();
-            userProfileData.put("displayname", displayName);
-            userProfileData.put("username", userName);
-            userProfileData.put("phonenumber", phoneNumber);
-
-            db.collection(userId + "_collection").document("profile")
-                    .set(userProfileData, SetOptions.merge())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully written!");
-                            Intent intent = new Intent(ProfileActivity.this, DashboardActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "onFailure: saveProfile Error: ", e);
-                        }
-                    });
         }
+    }
+
+
+    private void uploadUserProfileData(Map<String, Object> userProfileData) {
+
+        db.collection(userId + "_collection").document("profile")
+                .set(userProfileData, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Toast.makeText(getApplicationContext(), "Profile updated successfully.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(ProfileActivity.this, DashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "onFailure: saveProfile Error: ", e);
+                        Toast.makeText(getApplicationContext(), "Syncing data failed. Check internet connection.", Toast.LENGTH_SHORT).show();
+                        saveBtn.setEnabled(true);
+                    }
+                });
 
     }
+
 
     private void updateUserNamesCollection(String newUserName) {
         // find and delete previousUserName document
@@ -450,12 +490,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private boolean checkNameValidity(EditText editText, String name) {
+        if(name == null)
+            return false;
         if (name.length() < NAME_MIN_LENGTH) {
-            editText.setError("At least "+NAME_MIN_LENGTH+" characters required!");
+            if(editText != null)
+                editText.setError("At least " + NAME_MIN_LENGTH + " characters required!");
             return false;
         }
         if (name.length() > NAME_MAX_LENGTH) {
-            editText.setError("At most "+NAME_MAX_LENGTH+" characters allowed!");
+            if(editText != null)
+                editText.setError("At most " + NAME_MAX_LENGTH + " characters allowed!");
             return false;
         }
         return true;
@@ -557,8 +601,8 @@ public class ProfileActivity extends AppCompatActivity {
         Bitmap fromFileBitmap;
         try {
             // read image from profilePictureIV ImageView
-             fromFileBitmap = ((BitmapDrawable) profilePictureIV.getDrawable()).getBitmap();
-        } catch (ClassCastException e){
+            fromFileBitmap = ((BitmapDrawable) profilePictureIV.getDrawable()).getBitmap();
+        } catch (ClassCastException e) {
             Log.d(TAG, "saveProfilePictureToFile: ClassCastException occurred but has been handled. Error: " + e);
             return;
         }
