@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#282a36"
+    android:padding="10dp"
     tools:ignore="HardcodedText">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/idFriendCardCV_PC"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-
+        android:layout_height="100dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,74 +20,50 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            android:background="#FFEB3B"
+            android:padding="10dp">
 
             <ImageView
-                android:id="@+id/idFriendProfileIV_PC"
+                android:id="@+id/idProfilePictureIV_FC"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:contentDescription="Friend's Profile Image"
-                android:src="@drawable/googleg_standard_color_18"
+                android:src="@drawable/ic_profile_150"
+                app:layout_constraintHorizontal_weight="2"
 
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/idUserNameLblTV_PC"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/idUserNameTV_FC"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/idUserNameLblTV_PC"
-                style="@style/FriendCard"
+                android:id="@+id/idDisplayNameTV_FC"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
-                android:text="Username:"
+                android:text="Display Name"
+                app:layout_constraintBottom_toTopOf="@id/idUserNameTV_FC"
 
-                app:layout_constraintBottom_toTopOf="@id/idDisplayNameLbl_PC"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@id/idFriendProfileIV_PC"
-                app:layout_constraintRight_toLeftOf="@id/idFriendUserNameTV_PC"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/idFriendUserNameTV_PC"
-                style="@style/FriendCard"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="Friend's Username"
-
-                app:layout_constraintBottom_toTopOf="@id/idFriendDisplayNameTV_PC"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintLeft_toRightOf="@id/idUserNameLblTV_PC"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="7"
+                app:layout_constraintStart_toEndOf="@id/idProfilePictureIV_FC"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/idDisplayNameLbl_PC"
-                style="@style/FriendCard"
+                android:id="@+id/idUserNameTV_FC"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
-                android:text="Display Name:"
 
+                android:text="User Name: "
+                android:textAlignment="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@id/idFriendProfileIV_PC"
-                app:layout_constraintRight_toLeftOf="@id/idFriendDisplayNameTV_PC"
-                app:layout_constraintTop_toBottomOf="@id/idUserNameLblTV_PC" />
 
-            <TextView
-                android:id="@+id/idFriendDisplayNameTV_PC"
-                style="@style/FriendCard"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="Friend's Display Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="7"
+                app:layout_constraintStart_toEndOf="@id/idProfilePictureIV_FC"
+                app:layout_constraintTop_toBottomOf="@id/idDisplayNameTV_FC"/>
 
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintLeft_toRightOf="@id/idDisplayNameLbl_PC"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/idFriendUserNameTV_PC" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

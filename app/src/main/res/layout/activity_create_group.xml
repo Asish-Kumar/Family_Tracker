@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#009688"
     android:padding="16dp"
     tools:context=".CreateGroupActivity">
 
@@ -21,49 +22,85 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/idGroupIconIV_ACG"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/idGroupCardCV_ACG"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="#888310"
-
+                app:cardBackgroundColor="#ccc"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageButton
-                android:id="@+id/idEditGroupIconIB_ACG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"
-                android:background="@android:color/transparent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                app:layout_constraintBottom_toBottomOf="@id/idGroupIconIV_ACG"
-                app:layout_constraintRight_toRightOf="@id/idGroupIconIV_ACG"/>
+                    <ImageView
+                        android:id="@+id/idGroupIconIV_ACG"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:src="#FF9800"
 
-            <TextView
-                android:id="@+id/idGroupNameTV_ACG"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/idEditGroupIconIB_ACG"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_edit"
+
+                        app:layout_constraintBottom_toBottomOf="@id/idGroupIconIV_ACG"
+                        app:layout_constraintRight_toRightOf="@id/idGroupIconIV_ACG" />
+
+                    <TextView
+                        android:id="@+id/idGroupNameTV_ACG"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#2C000000"
+                        android:text="Group Name..."
+                        android:textColor="#fff"
+
+                        app:layout_constraintEnd_toStartOf="@id/idEditGroupNameIB_ACG"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/idEditGroupNameIB_ACG"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#2C000000"
+                        android:src="@drawable/ic_edit"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/idGroupNameTV_ACG"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/idSearchGroupSV_AD"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#8888"
-                android:textColor="#fff"
-                android:text="Group Name..."
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/oval_search_view_shape"
+                app:iconifiedByDefault="false"
+                app:layout_constraintBottom_toBottomOf="parent"
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/idEditGroupNameIB_ACG"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageButton
-                android:id="@+id/idEditGroupNameIB_ACG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"
-                android:background="@android:color/transparent"
-
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@id/idGroupNameTV_ACG"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/idGroupCardCV_ACG"
+                app:layout_constraintVertical_weight="0.4"
+                app:queryHint="Search for user names..." />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -326,6 +326,8 @@ public class ProfileActivity extends AppCompatActivity {
                                         userProfileData.put("username", userName);
                                         userProfileData.put("phonenumber", phoneNumber);
 
+                                        addUserNameToUserNamesCollection(userName);
+
                                         uploadUserProfileData(userProfileData);
 
                                     } else {
@@ -398,6 +400,28 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void addUserNameToUserNamesCollection(String userName){
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("userid", userId);
+
+        db.collection(USER_NAMES_COLLECTION).document(userName)
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "onFailure: updateUserNamesCollection Error : " + e);
+                    }
+                });
+
+    }
+
 
     private void updateUserNamesCollection(String newUserName) {
         // find and delete previousUserName document
@@ -437,23 +461,7 @@ public class ProfileActivity extends AppCompatActivity {
                 });
 
         // add new userName document to usernames collection
-        Map<String, Object> data = new HashMap<>();
-        data.put("userid", userId);
-
-        db.collection(USER_NAMES_COLLECTION).document(newUserName)
-                .set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "onFailure: updateUserNamesCollection Error : " + e);
-                    }
-                });
+        addUserNameToUserNamesCollection(newUserName);
 
     }
 

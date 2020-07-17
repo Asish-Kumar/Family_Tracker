@@ -13,8 +13,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/oval_search_view_shape"
-        app:layout_constraintCircleRadius="100dp"
         android:layout_margin="10dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="Search group names..."
 
         app:layout_constraintVertical_weight="0.4"
         app:layout_constraintTop_toTopOf="parent"

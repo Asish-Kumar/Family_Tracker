@@ -66,9 +66,7 @@ public class FriendsAdapter extends Adapter<FriendsAdapter.ViewHolder> {
             super(itemView);
             Log.d(TAG, "Invoked ViewHolder Constructor");
 
-            this.friendUserNameTV = itemView.findViewById(R.id.idFriendUserNameTV_PC);
-            this.friendDisplayNameTV = itemView.findViewById(R.id.idFriendDisplayNameTV_PC);
-            this.friendProfileIV = itemView.findViewById(R.id.idFriendProfileIV_PC);
+
 
         }
     }

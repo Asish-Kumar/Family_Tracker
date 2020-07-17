@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == KeyEvent.ACTION_DOWN)  {
-                    //do here your stuff f
+                    //do here your stuff
                     getOTPBtn.performClick();
                     return true;
                 }
@@ -256,7 +256,6 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
 
-                            // TODO: 6/23/2020 User profile pending
                             FirebaseUser user = task.getResult().getUser(); // this user result can be used to show user profile
 
                             Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
