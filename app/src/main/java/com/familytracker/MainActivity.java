@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             this.startActivity(intent);
             finish();
         } else {
-            // if user gas already set his profile then go directly to DashboardActivity
+            // if user has already set his profile then go directly to DashboardActivity
             // else go to ProfileActivity
 
             String userId = firebaseAuth.getUid();

@@ -86,20 +86,31 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/idSearchGroupSV_AD"
+                android:id="@+id/idSearchUserNameSV_ACD"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/oval_search_view_shape"
                 app:iconifiedByDefault="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-
+                app:layout_constraintBottom_toTopOf="@id/idSearchedUserNameLL_ACG"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/idGroupCardCV_ACG"
                 app:layout_constraintVertical_weight="0.4"
-                app:queryHint="Search for user names..." />
+                app:queryHint="Enter complete user name..." />
+
+            <LinearLayout
+                android:id="@+id/idSearchedUserNameLL_ACG"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idSearchUserNameSV_ACD"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
