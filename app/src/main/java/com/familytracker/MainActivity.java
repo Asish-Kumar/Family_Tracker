@@ -12,11 +12,18 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
             // else go to ProfileActivity
 
             String userId = firebaseAuth.getUid();
+
+            syncFirebaseInstanceIdToken(userId);
+
             db.collection(userId+"_collection").document("profile")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -56,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (documentSnapshot.exists()) {
                                     Log.d(TAG, "onComplete: updateUserNamesCollection: Document exist.");
 
-                                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);
                                     finish();
 
@@ -83,8 +93,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "onCreate: hello");
+
     }
 
+    private void syncFirebaseInstanceIdToken(final String userId){
+        // The FirebaseInstanceId is used to send and receive notifications and it changes so need to sync in onCreate
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        Log.d(TAG, "************** FirebaseInstanceId registration token is: "+token);
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("messagingregistrationid", token);
+                        db.collection(userId+"_collection").document("profile")
+                                .set(data, SetOptions.merge())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onSuccess: syncFirebaseInstanceIdToken synced successfully.");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e(TAG, "onFailure: syncFirebaseInstanceIdToken syncing failed with error.", e);
+
+                                    }
+                                });
+                    }
+                });
+
+    }
 
     @Override
     public void onBackPressed() {
